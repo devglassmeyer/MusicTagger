@@ -58,6 +58,7 @@ namespace MusicTagger
             if ((full_song_path == null) || (full_song_path.Trim() == "")) return;
 
             txtSongDetails.Text = "";
+            picAlbumCover.Image = null;
 
             paint_file_info("Song: " + full_song_path);
             TagLib.File tag_file;
@@ -80,18 +81,18 @@ namespace MusicTagger
             paint_file_info("Grouping " + tag_file.Tag.Grouping);
             paint_file_info("Title " + tag_file.Tag.Title);
             paint_file_info("TitleSort " + tag_file.Tag.TitleSort);
-            paint_file_info("Album Artists " + tag_file.Tag.AlbumArtists);
-            paint_file_info("Album Artists Sort " + tag_file.Tag.AlbumArtistsSort);
-            paint_file_info("Performers " + tag_file.Tag.Performers);
-            paint_file_info("Performers Sort " + tag_file.Tag.PerformersSort);
-            paint_file_info("Composers " + tag_file.Tag.Composers);
-            paint_file_info("Composers Sort " + tag_file.Tag.ComposersSort);
+            paint_file_info("Album Artists", tag_file.Tag.AlbumArtists);
+            paint_file_info("Album Artists Sort", tag_file.Tag.AlbumArtistsSort);
+            paint_file_info("Performers ", tag_file.Tag.Performers);
+            paint_file_info("Performers Sort", tag_file.Tag.PerformersSort);
+            paint_file_info("Composers", tag_file.Tag.Composers);
+            paint_file_info("Composers Sort", tag_file.Tag.ComposersSort);
             paint_file_info("Conductor " + tag_file.Tag.Conductor);
             paint_file_info("Album " + tag_file.Tag.Album);
             paint_file_info("Album Sort " + tag_file.Tag.AlbumSort);
             paint_file_info("Comment " + tag_file.Tag.Comment);
             paint_file_info("Copyright " + tag_file.Tag.Copyright);
-            paint_file_info("Genres " + tag_file.Tag.Genres);
+            paint_file_info("Genres", tag_file.Tag.Genres);
             paint_file_info("BPM " + tag_file.Tag.BeatsPerMinute);
             paint_file_info("Year " + tag_file.Tag.Year);
             paint_file_info("Track " + tag_file.Tag.Track);
@@ -122,18 +123,66 @@ namespace MusicTagger
             }
             IPicture[] pictures = tag_file.Tag.Pictures;
             paint_file_info($"Embedded Pictures: {pictures.Length}");
+            bool load_pic = true;
             foreach (var picture in pictures)
             {
                 paint_file_info(picture.Description);
                 paint_file_info($"   MimeType: {picture.MimeType}");
                 paint_file_info($"   Size:     {picture.Data.Count}");
                 paint_file_info($"   Type:     {picture.Type}");
+                if (load_pic)
+                {
+                    // load the 1st picture
+                    load_pic = false;
+
+                    picAlbumCover.Image = ByteToImage(picture.Data.Data);
+                    picAlbumCover.SizeMode = PictureBoxSizeMode.Zoom;
+                }
             }
+        }
+
+        private Bitmap ByteToImage(byte[] blob)
+        {
+            MemoryStream mStream = new MemoryStream();
+            byte[] pData = blob;
+            mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+            Bitmap bm = new Bitmap(mStream, false);
+            mStream.Dispose();
+            return bm;
         }
 
         private void paint_file_info(string line_to_paint)
         {
             txtSongDetails.Text += line_to_paint + "\r\n";
+        }
+
+        private void paint_file_info(string prefix_string,  string suffix_string)
+        {
+            paint_file_info(prefix_string + " " + suffix_string);
+        }
+
+        private void paint_file_info(string prefix_string, string[] strings)
+        {
+            if (strings.Length == 0)
+            {
+                paint_file_info(prefix_string + " <none>");
+            }
+            else
+            {
+                string suffix_string = "";
+                foreach (string s in strings)
+                {
+                    if (suffix_string == "")
+                    {
+                        suffix_string = s;
+                    }
+                    else
+                    {
+                        suffix_string += ", " + s;
+                    }
+                }
+                paint_file_info(prefix_string, suffix_string);
+            }
         }
 
         private void get_songs_in_dir(string song_dir)

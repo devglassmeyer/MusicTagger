@@ -34,6 +34,8 @@
             lstSongs = new ListBox();
             label2 = new Label();
             txtSongDetails = new TextBox();
+            picAlbumCover = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)picAlbumCover).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -92,14 +94,25 @@
             txtSongDetails.Multiline = true;
             txtSongDetails.Name = "txtSongDetails";
             txtSongDetails.ScrollBars = ScrollBars.Vertical;
-            txtSongDetails.Size = new Size(908, 287);
+            txtSongDetails.Size = new Size(489, 287);
             txtSongDetails.TabIndex = 5;
+            // 
+            // picAlbumCover
+            // 
+            picAlbumCover.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            picAlbumCover.Location = new Point(512, 365);
+            picAlbumCover.Name = "picAlbumCover";
+            picAlbumCover.Size = new Size(406, 285);
+            picAlbumCover.SizeMode = PictureBoxSizeMode.CenterImage;
+            picAlbumCover.TabIndex = 6;
+            picAlbumCover.TabStop = false;
             // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(946, 662);
+            Controls.Add(picAlbumCover);
             Controls.Add(txtSongDetails);
             Controls.Add(label2);
             Controls.Add(lstSongs);
@@ -109,6 +122,7 @@
             Name = "frmMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "The Music Tagger";
+            ((System.ComponentModel.ISupportInitialize)picAlbumCover).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -121,5 +135,6 @@
         private ListBox lstSongs;
         private Label label2;
         private TextBox txtSongDetails;
+        private PictureBox picAlbumCover;
     }
 }
