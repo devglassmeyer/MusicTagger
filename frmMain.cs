@@ -5,9 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TagLib;
+using TagLib.Matroska;
 
 namespace MusicTagger
 {
@@ -56,7 +59,81 @@ namespace MusicTagger
 
             txtSongDetails.Text = "";
 
-            txtSongDetails.Text = "Song: " + full_song_path + "\r\n";
+            paint_file_info("Song: " + full_song_path);
+            TagLib.File tag_file;
+
+            try
+            {
+                tag_file = TagLib.File.Create(full_song_path);
+            }
+            catch (UnsupportedFormatException)
+            {
+                paint_file_info("ERROR!");
+                paint_file_info("");
+                paint_file_info("UNSUPPORTED FILE");
+                return;
+            }
+
+            paint_file_info("");
+            paint_file_info($"Tags on disk: {tag_file.TagTypesOnDisk}");
+            paint_file_info($"Tags in object: {tag_file.TagTypes}");
+            paint_file_info("Grouping " + tag_file.Tag.Grouping);
+            paint_file_info("Title " + tag_file.Tag.Title);
+            paint_file_info("TitleSort " + tag_file.Tag.TitleSort);
+            paint_file_info("Album Artists " + tag_file.Tag.AlbumArtists);
+            paint_file_info("Album Artists Sort " + tag_file.Tag.AlbumArtistsSort);
+            paint_file_info("Performers " + tag_file.Tag.Performers);
+            paint_file_info("Performers Sort " + tag_file.Tag.PerformersSort);
+            paint_file_info("Composers " + tag_file.Tag.Composers);
+            paint_file_info("Composers Sort " + tag_file.Tag.ComposersSort);
+            paint_file_info("Conductor " + tag_file.Tag.Conductor);
+            paint_file_info("Album " + tag_file.Tag.Album);
+            paint_file_info("Album Sort " + tag_file.Tag.AlbumSort);
+            paint_file_info("Comment " + tag_file.Tag.Comment);
+            paint_file_info("Copyright " + tag_file.Tag.Copyright);
+            paint_file_info("Genres " + tag_file.Tag.Genres);
+            paint_file_info("BPM " + tag_file.Tag.BeatsPerMinute);
+            paint_file_info("Year " + tag_file.Tag.Year);
+            paint_file_info("Track " + tag_file.Tag.Track);
+            paint_file_info("TrackCount " + tag_file.Tag.TrackCount);
+            paint_file_info("Disc " + tag_file.Tag.Disc);
+            paint_file_info("DiscCount " + tag_file.Tag.DiscCount);
+
+            paint_file_info($"Lyrics:\n{tag_file.Tag.Lyrics}");
+            paint_file_info($"Media Types: {tag_file.Properties.MediaTypes}");
+
+            foreach (var codec in tag_file.Properties.Codecs)
+            {
+
+                if (codec is IAudioCodec acodec && (acodec.MediaTypes & MediaTypes.Audio) != MediaTypes.None)
+                {
+                    paint_file_info($"Audio Properties : {acodec.Description}");
+                    paint_file_info($"Bitrate:    {acodec.AudioBitrate}");
+                    paint_file_info($"SampleRate: {acodec.AudioSampleRate}");
+                    paint_file_info($"Channels:   {acodec.AudioChannels}");
+                }
+
+                if (codec is IVideoCodec vcodec && (vcodec.MediaTypes & MediaTypes.Video) != MediaTypes.None)
+                {
+                    paint_file_info($"Video Properties : {vcodec.Description}");
+                    paint_file_info($"Width:      {vcodec.VideoWidth}");
+                    paint_file_info($"Height:     {vcodec.VideoHeight}\n");
+                }
+            }
+            IPicture[] pictures = tag_file.Tag.Pictures;
+            paint_file_info($"Embedded Pictures: {pictures.Length}");
+            foreach (var picture in pictures)
+            {
+                paint_file_info(picture.Description);
+                paint_file_info($"   MimeType: {picture.MimeType}");
+                paint_file_info($"   Size:     {picture.Data.Count}");
+                paint_file_info($"   Type:     {picture.Type}");
+            }
+        }
+
+        private void paint_file_info(string line_to_paint)
+        {
+            txtSongDetails.Text += line_to_paint + "\r\n";
         }
 
         private void get_songs_in_dir(string song_dir)

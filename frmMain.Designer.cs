@@ -91,6 +91,7 @@
             txtSongDetails.Location = new Point(10, 363);
             txtSongDetails.Multiline = true;
             txtSongDetails.Name = "txtSongDetails";
+            txtSongDetails.ScrollBars = ScrollBars.Vertical;
             txtSongDetails.Size = new Size(908, 287);
             txtSongDetails.TabIndex = 5;
             // 
