@@ -35,7 +35,12 @@
             label2 = new Label();
             txtSongDetails = new TextBox();
             picAlbumCover = new PictureBox();
+            menuStrip1 = new MenuStrip();
+            fToolStripMenuItem = new ToolStripMenuItem();
+            findMissingToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)picAlbumCover).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -107,6 +112,36 @@
             picAlbumCover.TabIndex = 6;
             picAlbumCover.TabStop = false;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(946, 24);
+            menuStrip1.TabIndex = 7;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fToolStripMenuItem
+            // 
+            fToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { findMissingToolStripMenuItem, exitToolStripMenuItem });
+            fToolStripMenuItem.Name = "fToolStripMenuItem";
+            fToolStripMenuItem.Size = new Size(37, 20);
+            fToolStripMenuItem.Text = "File";
+            // 
+            // findMissingToolStripMenuItem
+            // 
+            findMissingToolStripMenuItem.Name = "findMissingToolStripMenuItem";
+            findMissingToolStripMenuItem.Size = new Size(180, 22);
+            findMissingToolStripMenuItem.Text = "Find &Missing";
+            findMissingToolStripMenuItem.Click += findMissingToolStripMenuItem_Click;
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Text = "E&xit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -119,10 +154,14 @@
             Controls.Add(btnGetAlbumDir);
             Controls.Add(txtAlbumDir);
             Controls.Add(label1);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "frmMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "The Music Tagger";
             ((System.ComponentModel.ISupportInitialize)picAlbumCover).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -136,5 +175,9 @@
         private Label label2;
         private TextBox txtSongDetails;
         private PictureBox picAlbumCover;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fToolStripMenuItem;
+        private ToolStripMenuItem findMissingToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
     }
 }

@@ -30,7 +30,7 @@ namespace MusicTagger
         {
             using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
             {
-                folderBrowserDialog.Description = "Select the parent folder folder";
+                folderBrowserDialog.Description = "Select the artist folder";
                 folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
                 folderBrowserDialog.ShowNewFolderButton = true;
 
@@ -156,7 +156,7 @@ namespace MusicTagger
             txtSongDetails.Text += line_to_paint + "\r\n";
         }
 
-        private void paint_file_info(string prefix_string,  string suffix_string)
+        private void paint_file_info(string prefix_string, string suffix_string)
         {
             paint_file_info(prefix_string + " " + suffix_string);
         }
@@ -221,6 +221,15 @@ namespace MusicTagger
             return "";
         }
 
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
 
+        private void findMissingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new frmFindMissingArt();
+            frm.ShowDialog();
+        }
     }
 }
