@@ -28,7 +28,7 @@ namespace MusicTagger
             }
             catch (UnsupportedFormatException)
             {
-                throw new Exception("Invalid song file: " +  song_path);
+                throw new Exception("Invalid song file: " + song_path);
             }
             IPicture[] pictures = tag_file.Tag.Pictures;
             return pictures.Length > 0;
@@ -36,16 +36,17 @@ namespace MusicTagger
         private void find_missing_art()
         {
             lstArtistAlbumsMissingArt.Items.Clear();
+            txtOutput.Text = "";
             if (!Directory.Exists(txtAlbumDir.Text)) return;
 
             string[] artist_dirs = Directory.GetDirectories(txtAlbumDir.Text);
 
-            if (artist_dirs.Length == 0 ) return;
+            if (artist_dirs.Length == 0) return;
 
             foreach (string an_artist_dir in artist_dirs)
             {
                 string[] album_dirs_for_artist = Directory.GetDirectories(an_artist_dir);
-                if (album_dirs_for_artist.Length == 0 ) continue;
+                if (album_dirs_for_artist.Length == 0) continue;
 
                 DirectoryInfo artist_dir = new DirectoryInfo(an_artist_dir);
                 string name_of_artist = artist_dir.Name;
@@ -59,6 +60,14 @@ namespace MusicTagger
                         if (is_song(a_song) && !has_art(a_song))
                         {
                             lstArtistAlbumsMissingArt.Items.Add(album_dir);
+                            if (lstArtistAlbumsMissingArt.Items.Count > 1)
+                            {
+                                txtOutput.Text += "\r\n" + album_dir;
+                            }
+                            else
+                            {
+                                txtOutput.Text = album_dir;
+                            }
                             break;
                         }
                     }
@@ -84,6 +93,48 @@ namespace MusicTagger
                     string selectedPath = folderBrowserDialog.SelectedPath;
                     txtAlbumDir.Text = selectedPath;
                     find_missing_art();
+                }
+            }
+        }
+
+        private void set_art_for_album(string album_path, string art_file)
+        {
+            string[] song_files = Directory.GetFiles(album_path, "*.flac");
+            TagLib.Picture album_art_pic = new TagLib.Picture(art_file);
+            TagLib.Picture[] pics = new Picture[1];
+            pics[0] = album_art_pic;
+
+            foreach (string a_song_file in song_files)
+            {
+                TagLib.File tag_file;
+                try
+                {
+                    tag_file = TagLib.File.Create(a_song_file);
+                }
+                catch (UnsupportedFormatException)
+                {
+                    throw new Exception("Invalid song file: " + a_song_file);
+                }
+                if (tag_file.Tag.Pictures.Length == 0)
+                {
+                    tag_file.Tag.Pictures = pics;
+                    tag_file.Save();
+                }
+            }
+            
+
+        }
+
+        private void btnFixMissingArt_Click(object sender, EventArgs e)
+        {
+            if (lstArtistAlbumsMissingArt.Items.Count == 0) return;
+
+            foreach (string album_path in lstArtistAlbumsMissingArt.Items)
+            {
+                string[] art_files = Directory.GetFiles(album_path, "*.jpg");
+                if (art_files.Length > 0)
+                {
+                    set_art_for_album(album_path, art_files[0]);
                 }
             }
         }

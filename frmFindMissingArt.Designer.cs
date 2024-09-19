@@ -34,6 +34,8 @@
             btnGetAlbumDir = new Button();
             label3 = new Label();
             lstArtistAlbumsMissingArt = new ListBox();
+            btnFixMissingArt = new Button();
+            txtOutput = new TextBox();
             SuspendLayout();
             // 
             // txtAlbumDir
@@ -86,19 +88,40 @@
             // 
             // lstArtistAlbumsMissingArt
             // 
-            lstArtistAlbumsMissingArt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lstArtistAlbumsMissingArt.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lstArtistAlbumsMissingArt.FormattingEnabled = true;
             lstArtistAlbumsMissingArt.ItemHeight = 15;
             lstArtistAlbumsMissingArt.Location = new Point(12, 110);
             lstArtistAlbumsMissingArt.Name = "lstArtistAlbumsMissingArt";
-            lstArtistAlbumsMissingArt.Size = new Size(926, 229);
+            lstArtistAlbumsMissingArt.Size = new Size(926, 274);
             lstArtistAlbumsMissingArt.TabIndex = 6;
+            // 
+            // btnFixMissingArt
+            // 
+            btnFixMissingArt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnFixMissingArt.Location = new Point(12, 394);
+            btnFixMissingArt.Name = "btnFixMissingArt";
+            btnFixMissingArt.Size = new Size(157, 35);
+            btnFixMissingArt.TabIndex = 8;
+            btnFixMissingArt.Text = "Fix Missing Art";
+            btnFixMissingArt.UseVisualStyleBackColor = true;
+            btnFixMissingArt.Click += btnFixMissingArt_Click;
+            // 
+            // txtOutput
+            // 
+            txtOutput.Location = new Point(332, 390);
+            txtOutput.Multiline = true;
+            txtOutput.Name = "txtOutput";
+            txtOutput.Size = new Size(606, 46);
+            txtOutput.TabIndex = 9;
             // 
             // frmFindMissingArt
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(978, 435);
+            ClientSize = new Size(978, 441);
+            Controls.Add(txtOutput);
+            Controls.Add(btnFixMissingArt);
             Controls.Add(label3);
             Controls.Add(lstArtistAlbumsMissingArt);
             Controls.Add(btnGetAlbumDir);
@@ -120,5 +143,7 @@
         private Button btnGetAlbumDir;
         private Label label3;
         private ListBox lstArtistAlbumsMissingArt;
+        private Button btnFixMissingArt;
+        private TextBox txtOutput;
     }
 }
